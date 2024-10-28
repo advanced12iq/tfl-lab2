@@ -54,8 +54,12 @@ def maze_to_dka(maze : Maze) -> DFA:
 
 
 def get_table():
-    lines = sys.stdin.read()
-    lines = list(map(lambda s: s.strip().split()))
+    lines = []
+    for line in sys.stdin:
+        if line.strip() == 'end':
+            break
+        lines.append(line)
+    lines = list(map(lambda s: s.strip().split(), lines))
 
     suff = lines[0]
     pref = list(map(lambda s: s[0], lines[1:]))
@@ -76,7 +80,7 @@ def table_to_dka(table : dict, maze : Maze) -> DFA:
     alphabet = ['S', 'N', 'W', 'E']
     alp_to_wall = {'S' : 'bottom', 'N':'top', 'W':'left', 'E':'right'}
     dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    alp_to_dir = {alp : dir for alp, dir in zip(list(alphabet, dirs))}
+    alp_to_dir = {alp : dir for alp, dir in zip(alphabet, dirs)}
 
     transitions = {}
     start_state = (1, 1)
@@ -126,7 +130,7 @@ def isin(word : str, maze_dka : DFA) -> bool:
 from collections import deque
 def bfs(maze_dka : DFA, state : tuple, final : bool)->str:
     deq = deque()
-    visited = set()
+    visited = set([(-1, -1)])
     deq.append((state, ""))
     while deq:
         for _ in range(len(deq)):

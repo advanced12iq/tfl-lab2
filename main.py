@@ -15,7 +15,7 @@ random.seed(322)
 def main():
     maze = Maze(3, 3)
     vis = Visualizer(maze, 1, "")
-    vis.show_maze()
+    # vis.show_maze()
     maze_dka = maze_to_dka(maze)
     while True:
         type = input()
@@ -24,7 +24,7 @@ def main():
             print(isin(word, maze_dka))
         else:
             table = get_table()
-            print(equal(maze_dka, table_to_dka(table)))
+            print(equal(maze_dka, table_to_dka(table, maze)))
 
 if __name__ == '__main__':
     main()
