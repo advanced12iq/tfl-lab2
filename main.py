@@ -15,10 +15,8 @@ random.seed(322)
 def main():
     maze = Maze(3, 3)
     vis = Visualizer(maze, 1, "")
-    # vis.show_maze()
+    vis.show_maze()
     maze_dka = maze_to_dka(maze)
-    for key, value in maze_dka.transitions.items():
-        print(key, value)
     while True:
         type = input()
         if type == 'isin':

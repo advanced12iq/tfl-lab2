@@ -54,7 +54,7 @@ def maze_to_dka(maze : Maze) -> DFA:
 
 
 def get_table():
-    lines = sys.stdin.readlines()
+    lines = sys.stdin.read()
     lines = list(map(lambda s: s.strip().split()))
 
     suff = lines[0]
