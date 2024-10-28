@@ -61,8 +61,9 @@ def get_table():
         lines.append(line)
     lines = list(map(lambda s: s.strip().split(), lines))
 
-    suff = lines[0]
+    suff = list(map(lambda s: "" if s == 'e' else s, lines[0]))
     pref = list(map(lambda s: s[0], lines[1:]))
+    pref = list(map(lambda s: "" if s == 'e' else s, pref))
 
     values = list(map(lambda s: list(map(bool, s[1:])), lines[1:]))
     words = {}
