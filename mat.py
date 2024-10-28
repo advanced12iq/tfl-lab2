@@ -42,8 +42,11 @@ def maze_to_dka(maze : Maze) -> DFA:
         for j in range(cols):
             for (a, b), alp in zip(dirs, alphabet):
                 x, y= i +a, j + b
-                if x in range(cols) and y in range(cols) and not maze.initial_grid[i][j].walls[alp_to_wall[alp]]:
-                    transitions[((i, j), alp)] = (x, y)
+                if x in range(rows) and y in range(cols):
+                    if not maze.initial_grid[i][j].walls[alp_to_wall[alp]]:
+                        transitions[((i, j), alp)] = (x, y)
+                    else:
+                        transitions[((i, j), alp)] = (i, j)
                 else:
                     transitions[((i, j), alp)] = (-1, -1)
     
