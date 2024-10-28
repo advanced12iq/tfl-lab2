@@ -618,7 +618,7 @@ class Visualizer(object):
         self.ax.axes.get_yaxis().set_visible(True)
 
         title_box = self.ax.text(0, self.maze.num_rows + self.cell_size + 0.1,
-                            r"{}$\times${}".format(self.maze.num_rows, self.maze.num_cols),
+                            r"{}$\times${}".format(self.maze.num_rows - 2, self.maze.num_cols - 2),
                             bbox={"facecolor": "gray", "alpha": 0.5, "pad": 4}, fontname="serif", fontsize=15)
 
         return fig
