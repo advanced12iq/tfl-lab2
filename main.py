@@ -10,13 +10,19 @@ RANDOM_SEED = int(os.getenv("RANDOM_SEED", 42))  # Default to 42 if not set
 HEIGHT = int(os.getenv("HEIGHT", 10))
 WIDTH = int(os.getenv("WIDTH", 10))
 
-random.seed(322)
+random.seed(5125)
 
 def main():
-    maze = Maze(3, 3)
+    maze = Maze(1, 1)
     vis = Visualizer(maze, 1, "")
-    # vis.show_maze()
+    vis.show_maze()
     maze_dka = maze_to_dka(maze)
+    print(maze.num_exits)
+    print(maze.possible_exits)
+    print(maze.exits)
+    for i in range(len(maze.initial_grid)):
+        for j in range(len(maze.initial_grid[i])):
+            print((i, j), maze.initial_grid[i][j].walls)
     while True:
         type = input()
         if type == 'isin':

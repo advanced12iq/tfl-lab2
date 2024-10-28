@@ -1,3 +1,8 @@
+import matplotlib.pyplot as plt
+
+
+plt.set_loglevel (level = 'warning')
+
 
 class Cell(object):
     """Class for representing a cell in a 2D grid.
@@ -134,9 +139,9 @@ def depth_first_recursive_backtracker( maze, start_coor ):
 
         # maze.grid[maze.entry_coor[0]][maze.entry_coor[1]].set_as_entry_exit("entry",
         #     maze.num_rows-1, maze.num_cols-1)
-        for i in range(len(maze.exit_coor)):
-            maze.grid[maze.exit_coor[i][0]][maze.exit_coor[i][1]].set_as_entry_exit("exit",
-                maze.num_rows-1, maze.num_cols-1)
+        # for i in range(len(maze.exit_coor)):
+        #     maze.grid[maze.exit_coor[i][0]][maze.exit_coor[i][1]].set_as_entry_exit("exit",
+        #         maze.num_rows-1, maze.num_cols-1)
 
         for i in range(maze.num_rows):
             for j in range(maze.num_cols):
@@ -301,9 +306,6 @@ class Maze(object):
         self.id = id
         self.grid_size = num_rows*num_cols
         self.num_exits = random.randint(1, (num_cols+num_rows)*2+1)
-        self.possible_exits = [(0, i) for i in range(self.num_cols)]+[(self.num_rows-1, i) for i in range(self.num_cols)]+\
-            [(i, 0) for i in range(self.num_rows)]+[(i, self.num_cols-1) for i in range(self.num_rows)]
-        self.exit_coor = random.choices(self.possible_exits, k=self.num_exits)
         self.entry_coor = (0,0)
         self.generation_path = []
         self.solution_path = None
@@ -311,6 +313,10 @@ class Maze(object):
         self.grid = self.initial_grid
         self.generate_maze(algorithm, (0, 0))
         self.add_padding()
+        self.possible_exits = [((0, i), (1, i)) for i in range(1, self.num_cols-1)]+[((self.num_rows-1, i), (self.num_rows-2, i)) for i in range(1, self.num_cols-1)]+\
+            [((i, 0), (i, 1)) for i in range(1, self.num_rows-1)]+[((i, self.num_cols-1), (i, self.num_cols-2)) for i in range(1, self.num_rows-1)]
+        self.exits = random.choices(self.possible_exits, k=self.num_exits)
+        # self.make_exits()
 
     def generate_grid(self):
         """Function that creates a 2D grid of Cell objects. This can be thought of as a
@@ -525,6 +531,11 @@ class Maze(object):
         self.num_cols += 2
         self.num_rows+=2
         self.grid_size = self.num_cols * self.num_rows
+    
+    def make_exits(self):
+        for exit in self.exits:
+            self.initial_grid[exit[0][0]][exit[0][1]].remove_walls(exit[1][0], exit[1][1])
+            self.initial_grid[exit[1][0]][exit[1][1]].remove_walls(exit[0][0], exit[0][1])
 
 import matplotlib.pyplot as plt
 import logging
