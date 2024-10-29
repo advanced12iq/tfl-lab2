@@ -142,7 +142,7 @@ class Maze(object):
         self.num_rows = num_rows
         self.id = id
         self.grid_size = num_rows*num_cols
-        self.num_exits = random.randint(1, (num_cols+num_rows)*2+1)
+        self.num_exits = random.randint(1, (num_cols+num_rows)*2)
         self.entry_coor = (0,0)
         self.generation_path = []
         self.solution_path = None
