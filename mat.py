@@ -90,7 +90,7 @@ def table_to_dka(table : dict, maze : Maze) -> DFA:
 
     hidden_state = None
     
-
+    
     for word, value in table.items():
         current_state = start_state
         for letter in word:
@@ -112,10 +112,11 @@ def table_to_dka(table : dict, maze : Maze) -> DFA:
                     transitions[(current_state, letter)] = (-1, -1)
                     hidden_state = next_state
                     states.add((-1, -1))
+                    current_state = (-1, -1)
                 else:
                     states.add(next_state)
                     transitions[(current_state, letter)] = next_state
-                current_state = next_state
+                    current_state = next_state
         if value:
             accept_states.add(current_state)
     
