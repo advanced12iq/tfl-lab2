@@ -145,7 +145,7 @@ def isin(word : str, maze_dka : DFA, maze : Maze) -> bool:
 
 
 from collections import deque
-def bfs(maze_dka : DFA, state : tuple, final : bool)->str:
+def bfs(maze_dka : DFA, state : tuple, final : bool, reverse = False)->str:
     deq = deque()
     visited = set([(-1, -1)])
     deq.append((state, ""))
@@ -153,6 +153,9 @@ def bfs(maze_dka : DFA, state : tuple, final : bool)->str:
         for _ in range(len(deq)):
             current_state, way = deq.popleft()
             if (final and current_state in maze_dka.accept_states) or (not final and current_state == maze_dka.start_state):
+                if reverse:
+                    opposites = {'S' : 'N', 'N' : 'S', 'W' : 'E', 'E' : 'W'}
+                    way = "".join([opposites[w] for w in way[::-1]])
                 return way
             visited.add(current_state)
             for letter in maze_dka.alphabet:
@@ -168,12 +171,12 @@ def counter_word_state(maze_dka : DFA, state : tuple) -> str:
     # Если отсутствует особое состояние, возвращаем путь до точки + уход в сторону
 
     if state == (-1, -1):
-        return bfs(maze_dka, (0, 0), False)[::-1] + "N"
+        return bfs(maze_dka, (0, 0), False, True) + "N"
     
     # Если отсутствует состояние возвращаем маршрут до выхода через это состояние
     # Первый бфс вернет путь от старта до состояния, второй дфс вернет путь от состояния до финального
 
-    return bfs(maze_dka, state, False)[::-1] + bfs(maze_dka, state, True)
+    return bfs(maze_dka, state, False, True) + bfs(maze_dka, state, True)
 
 
 def counter_word_accept_state(maze_dka : DFA, accept_state : tuple) -> str:
@@ -181,11 +184,11 @@ def counter_word_accept_state(maze_dka : DFA, accept_state : tuple) -> str:
     # Если отсутствует особое состояние, возвращаем путь до точки + уход в сторону
 
     if accept_state == (-1, -1):
-        return bfs(maze_dka, ((0, 0)), False)[::-1] + "N"
+        return bfs(maze_dka, ((0, 0)), False, True) + "N"
     
     # Если отсутствует финальное состояние просто проходим от финального состояния до старта
 
-    return bfs(maze_dka, accept_state, False)[::-1]
+    return bfs(maze_dka, accept_state, False, True)
 
 
 def counter_word_transition(maze_dka : DFA, transition : tuple) -> str:
@@ -193,11 +196,11 @@ def counter_word_transition(maze_dka : DFA, transition : tuple) -> str:
     # Если отсутствует переход ищем маршрут до выхода через переход
     if transition[1] == (-1,-1):
         opposites = {'S' : 'N', 'N' : 'S', 'W' : 'E', 'E' : 'W'}
-        return bfs(maze_dka, transition[0][0], False)[::-1] + transition[0][1] + \
+        return bfs(maze_dka, transition[0][0], False, True) + transition[0][1] + \
             opposites[transition[0][1]]
         
 
-    return bfs(maze_dka, transition[0][0], False)[::-1] + transition[0][1] + bfs(maze_dka, transition[1], True)
+    return bfs(maze_dka, transition[0][0], False, True) + transition[0][1] + bfs(maze_dka, transition[1], True)
 
 
 def equal(maze_dka : DFA, table_dka : DFA) -> str:
