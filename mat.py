@@ -65,12 +65,12 @@ def get_table():
     pref = list(map(lambda s: s[0], lines[1:]))
     pref = list(map(lambda s: "" if s == 'e' else s, pref))
 
-    values = list(map(lambda s: list(map(bool, s[1:])), lines[1:]))
+    values = list(map(lambda s: list(map(int, s[1:])), lines[1:]))
     words = {}
 
     for i in range(len(pref)):
         for j in range(len(suff)):
-            words[pref[i] + suff[j]] = values[i][j]
+            words[pref[i] + suff[j]] = bool(values[i][j])
     
     return words
 
