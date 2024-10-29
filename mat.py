@@ -121,10 +121,26 @@ def table_to_dka(table : dict, maze : Maze) -> DFA:
     
     return DFA(states, alphabet, transitions, start_state, accept_states)
 
-def isin(word : str, maze_dka : DFA) -> bool:
+def isin(word : str, maze_dka : DFA, maze : Maze) -> bool:
+    alphabet = ['S', 'N', 'W', 'E']
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    alp_to_dir = {alp : dir for alp, dir in zip(alphabet, dirs)}
+
+
     current_state = maze_dka.start_state
+    hidden_state = current_state
+
     for letter in word:
+        if current_state == (-1, -1):
+            hidden_state = (hidden_state[0] + alp_to_dir[letter][0], hidden_state[1] + alp_to_dir[letter][1])
+            if hidden_state[0] in range(maze.num_rows) and hidden_state[1] in range(maze.num_cols):
+                current_state = hidden_state
+                hidden_state = None
+            continue
+        hidden_state = current_state
         current_state = maze_dka.transitions[(current_state, letter)]
+        if current_state == (-1, -1):
+            hidden_state = (hidden_state[0] + alp_to_dir[letter][0], hidden_state[1] + alp_to_dir[letter][1])
     return current_state in maze_dka.accept_states
 
 
