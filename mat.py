@@ -97,7 +97,7 @@ def table_to_dka(table : dict, maze : Maze) -> DFA:
             # Обрабатываем выход за границы лабиринта
             if current_state == (-1, -1): 
                 next_state = (hidden_state[0] + alp_to_dir[letter][0], hidden_state[1] + alp_to_dir[letter][1])
-                if hidden_state in range(rows) and hidden_state in range(cols):
+                if next_state[0] in range(rows) and next_state[1] in range(cols):
                     current_state = next_state
                     hidden_state = None
                 else:

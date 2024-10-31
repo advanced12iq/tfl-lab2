@@ -10,14 +10,15 @@ RANDOM_SEED = int(os.getenv("RANDOM_SEED", 42))  # Default to 42 if not set
 HEIGHT = int(os.getenv("HEIGHT", 10))
 WIDTH = int(os.getenv("WIDTH", 10))
 
-random.seed(2)
+random.seed(RANDOM_SEED)
 
 def main():
-    maze = Maze(1, 1)
+    maze = Maze(HEIGHT, WIDTH)
     maze_dka = maze_to_dka(maze)
-    
+    # for key, value in maze_dka.transitions.items():
+    #     print(key, value)
     vis = Visualizer(maze, 1, "")
-    # vis.show_maze()
+    vis.show_maze()
     
     while True:
         type = input()
