@@ -2,7 +2,7 @@ from maze import Maze
 import sys
 
 class DFA:
-    def __init__(self, states : set, alphabet : list, transitions : set, start_state : tuple, accept_states : set):
+    def __init__(self, states : set, alphabet : list, transitions : dict, start_state : tuple, accept_states : set):
         self.states = states  # множество состояний
         self.alphabet = alphabet  # алфавит
         self.transitions = transitions  # таблица переходов
