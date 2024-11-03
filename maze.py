@@ -339,15 +339,28 @@ class Visualizer(object):
                 if self.maze.initial_grid[i][j].walls["bottom"]:
                     self.ax.plot([j*self.cell_size, (j+1)*self.cell_size],
                                  [i*self.cell_size, i*self.cell_size], color="k")
+                else:
+                    self.ax.plot([j*self.cell_size, (j+1)*self.cell_size],
+                                 [i*self.cell_size, i*self.cell_size], color="#ede9e8", linestyle=':')
                 if self.maze.initial_grid[i][j].walls["right"]:
                     self.ax.plot([(j+1)*self.cell_size, (j+1)*self.cell_size],
                                  [i*self.cell_size, (i+1)*self.cell_size], color="k")
+                else:
+                    self.ax.plot([(j+1)*self.cell_size, (j+1)*self.cell_size],
+                                 [i*self.cell_size, (i+1)*self.cell_size], color="#ede9e8", linestyle=':')
                 if self.maze.initial_grid[i][j].walls["top"]:
                     self.ax.plot([(j+1)*self.cell_size, j*self.cell_size],
                                  [(i+1)*self.cell_size, (i+1)*self.cell_size], color="k")
+                else:
+                    self.ax.plot([(j+1)*self.cell_size, j*self.cell_size],
+                                 [(i+1)*self.cell_size, (i+1)*self.cell_size], color="#ede9e8", linestyle=':')
                 if self.maze.initial_grid[i][j].walls["left"]:
                     self.ax.plot([j*self.cell_size, j*self.cell_size],
                                  [(i+1)*self.cell_size, i*self.cell_size], color="k")
+                else:
+                    self.ax.plot([j*self.cell_size, j*self.cell_size],
+                                 [(i+1)*self.cell_size, i*self.cell_size], color="#ede9e8", linestyle=':')
+
 
     def configure_plot(self):
         """Sets the initial properties of the maze plot. Also creates the plot and axes"""
