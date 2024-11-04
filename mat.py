@@ -30,7 +30,7 @@ def maze_to_dka(maze : Maze) -> DFA:
     cols = maze.num_cols
 
     transitions = {}
-    start_state = (1, 1)
+    start_state = (rows-2, 1)
     accept_states = set([(0, i) for i in range(cols)] + [(rows-1, i) for i in range(cols)] + [(i, 0) for i in range(rows)] + [(i, cols-1) for i in range(cols)] + [(-1, -1)])
     states = set([(i, j) for i in range(rows) for j in range(cols)] + [(-1, -1)])
     alphabet = ['S', 'N', 'W', 'E']
@@ -85,7 +85,7 @@ def new_table_to_dka(table : dict, maze: Maze) -> DFA:
     alp_to_dir = {alp : dir for alp, dir in zip(alphabet, dirs)}
 
     transitions = {}
-    start_state = (1, 1)
+    start_state = (rows-2, 1)
     accept_states = set()
     states = set([start_state])
 
@@ -136,7 +136,7 @@ def table_to_dka(table : dict, maze : Maze) -> DFA:
     alp_to_dir = {alp : dir for alp, dir in zip(alphabet, dirs)}
 
     transitions = {}
-    start_state = (1, 1)
+    start_state = (rows-2, 1)
     accept_states = set()
     states = set([start_state])
 
