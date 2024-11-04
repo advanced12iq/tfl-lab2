@@ -70,9 +70,61 @@ def get_table():
 
     for i in range(len(pref)):
         for j in range(len(suff)):
-            words[pref[i] + suff[j]] = bool(values[i][j])
+            words[(pref[i], suff[j])] = bool(values[i][j])
     
     return words
+
+
+def new_table_to_dka(table : dict, maze: Maze) -> DFA:
+    rows = maze.num_rows
+    cols = maze.num_cols
+
+    alphabet = ['S', 'N', 'W', 'E']
+    alp_to_wall = {'S' : 'bottom', 'N':'top', 'W':'left', 'E':'right'}
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    alp_to_dir = {alp : dir for alp, dir in zip(alphabet, dirs)}
+
+    transitions = {}
+    start_state = (1, 1)
+    accept_states = set()
+    states = set([start_state])
+
+    hidden_state = None
+    
+    for (pref, suff), value in table.items():
+        word = pref + suff
+        current_state = start_state
+        for letter in word:
+            # Обрабатываем выход за границы лабиринта
+            if current_state == (-1, -1): 
+                next_state = (hidden_state[0] + alp_to_dir[letter][0], hidden_state[1] + alp_to_dir[letter][1])
+                if next_state[0] in range(rows) and next_state[1] in range(cols):
+                    current_state = next_state
+                    hidden_state = None
+                else:
+                    hidden_state = next_state
+                continue
+            if maze.initial_grid[current_state[0]][current_state[1]].walls[alp_to_wall[letter]]:
+                transitions[(current_state, letter)] = current_state
+            else:
+                next_state = (current_state[0] + alp_to_dir[letter][0], current_state[1] + alp_to_dir[letter][1])
+                # Выход за лабиринт
+                if next_state[0] not in range(rows) or next_state[1] not in range(cols):
+                    transitions[(current_state, letter)] = (-1, -1)
+                    hidden_state = next_state
+                    if not suff:
+                        states.add((-1, -1))
+                    current_state = (-1, -1)
+                else:
+                    if not suff:
+                        states.add(next_state)
+                    transitions[(current_state, letter)] = next_state
+                    current_state = next_state
+        if value and not suff:
+            accept_states.add(current_state)
+    
+    return DFA(states, alphabet, transitions, start_state, accept_states)
+
 
 def table_to_dka(table : dict, maze : Maze) -> DFA:
     rows = maze.num_rows
@@ -91,7 +143,8 @@ def table_to_dka(table : dict, maze : Maze) -> DFA:
     hidden_state = None
     
     
-    for word, value in table.items():
+    for (pref, suff), value in table.items():
+        word = pref + suff
         current_state = start_state
         for letter in word:
             # Обрабатываем выход за границы лабиринта
