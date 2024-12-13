@@ -266,9 +266,13 @@ def equal(maze_dka : DFA, table_dka : DFA) -> str:
     for state in maze_dka.accept_states:
         if state not in table_dka.accept_states:
             return counter_word_accept_state(maze_dka, state)
-        
+
     for transition in maze_dka.transitions:
         if transition not in table_dka.transitions:
             return counter_word_transition(maze_dka, (transition, maze_dka.transitions[transition]))
+        
+    for state in table_dka.accept_states:
+        if state not in maze_dka.accept_states:
+            return counter_word_accept_state(maze_dka, state)
         
     return "TRUE"
